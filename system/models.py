@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 
 class Customer(models.Model):
     first_name = models.CharField(max_length=50, blank=False)
@@ -12,3 +12,6 @@ class Customer(models.Model):
     def save(self, *args, **kwargs):
         self.password = make_password(self.password)
         super(Customer, self).save(*args, **kwargs)
+
+    def check_password(self, password):
+        return check_password(password=password, encoded=self.password)
